@@ -11,64 +11,59 @@
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     min-height: 100vh;
     margin: 0;
-    padding: 16px;
+    padding: 14px;
     color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   h1 {
-    font-size: 26px;
-    margin: 8px 0 4px;
+    font-size: 22px;
+    margin: 6px 0 4px;
     text-align: center;
     text-shadow: 0 2px 6px rgba(0,0,0,0.4);
   }
   .subtitle {
-    font-size: 14px;
+    font-size: 13px;
     opacity: 0.9;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     text-align: center;
-    max-width: 760px;
-    line-height: 1.5;
+    max-width: 700px;
+    line-height: 1.45;
   }
 
   /* ---------- Экран выбора уровня ---------- */
   #levelScreen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    margin-top: 20px;
-    width: 100%;
-    max-width: 700px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; margin-top: 12px; width: 100%; max-width: 620px;
   }
-  #levelScreen h2 { font-size: 22px; margin: 0 0 6px; }
+  #levelScreen h2 { font-size: 20px; margin: 0 0 4px; }
   .level-cards {
-    display: flex; gap: 16px; flex-wrap: wrap;
+    display: flex; gap: 12px; flex-wrap: wrap;
     justify-content: center; width: 100%;
   }
   .level-card {
-    flex: 1 1 200px; max-width: 220px;
-    border-radius: 16px; padding: 20px 16px;
+    flex: 1 1 160px; max-width: 190px;
+    border-radius: 14px; padding: 16px 12px;
     cursor: pointer; text-align: center;
     border: 3px solid transparent;
-    transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    transition: transform 0.15s, box-shadow 0.2s;
     box-shadow: 0 8px 20px rgba(0,0,0,0.35);
   }
   .level-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.5); }
-  .level-card .emoji { font-size: 40px; display: block; margin-bottom: 8px; }
-  .level-card .name { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-  .level-card .desc { font-size: 13px; opacity: 0.95; line-height: 1.4; }
+  .level-card .emoji { font-size: 32px; display: block; margin-bottom: 6px; }
+  .level-card .name { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .level-card .desc { font-size: 12px; opacity: 0.95; line-height: 1.35; }
   .level-easy   { background: linear-gradient(135deg, #2ecc71, #27ae60); }
   .level-medium { background: linear-gradient(135deg, #f39c12, #e67e22); }
   .level-hard   { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
   .sound-toggle {
-    margin-top: 6px;
+    margin-top: 4px;
     display: flex; align-items: center; gap: 8px;
     font-size: 14px; opacity: 0.9;
     background: rgba(255,255,255,0.12);
-    padding: 8px 16px; border-radius: 20px;
+    padding: 7px 14px; border-radius: 20px;
     cursor: pointer; user-select: none;
   }
   .sound-toggle input { cursor: pointer; }
@@ -77,26 +72,25 @@
   #gameScreen { display: none; flex-direction: column; align-items: center; width: 100%; }
 
   .topbar {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
     flex-wrap: wrap; justify-content: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .badge {
     background: rgba(255,255,255,0.18);
-    padding: 6px 14px; border-radius: 20px;
-    font-size: 14px; font-weight: 600;
-    white-space: nowrap;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; white-space: nowrap;
   }
   .badge.score { background: rgba(46,204,113,0.35); }
   .badge.timer { background: rgba(241,196,15,0.35); }
 
   .controls {
-    display: flex; gap: 10px; flex-wrap: wrap;
-    justify-content: center; margin-bottom: 14px;
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 12px;
   }
   button {
-    padding: 10px 18px; border: none; border-radius: 10px;
-    font-size: 15px; cursor: pointer; font-weight: 700;
+    padding: 9px 15px; border: none; border-radius: 9px;
+    font-size: 14px; cursor: pointer; font-weight: 700;
     transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
     color: #fff;
   }
@@ -109,38 +103,30 @@
   .btn-level { background: #34495e; }
 
   .table-wrap { overflow-x: auto; max-width: 100%; padding-bottom: 6px; }
-  table { border-collapse: separate; border-spacing: 4px; margin: 0 auto; }
+  table { border-collapse: separate; border-spacing: 5px; margin: 0 auto; }
   td {
-    width: 132px; height: 86px;
+    width: 175px; height: 92px;
     text-align: center; vertical-align: middle;
-    border-radius: 10px; font-size: 14px; padding: 4px;
+    border-radius: 10px; padding: 3px;
     background: rgba(255,255,255,0.08);
   }
-  td.header { background: rgba(255,255,255,0.16); font-weight: bold; }
+  td.header { background: rgba(255,255,255,0.16); font-weight: bold; width: 140px; }
   td.corner {
     background: rgba(255,255,255,0.22);
-    font-size: 22px; font-weight: 900; color: #ffe082;
-  }
-  td.given {
-    background: rgba(255,255,255,0.20);
-    font-family: 'Cambria Math', 'Times New Roman', serif;
-    font-style: italic; font-size: 17px; font-weight: 600;
-    color: #fff8e1;
-  }
-  td.empty-cell {
-    background: rgba(0,0,0,0.18);
-    color: rgba(255,255,255,0.35); font-size: 20px;
+    font-size: 20px; font-weight: 900; color: #ffe082;
+    width: 140px;
   }
 
+  /* Поля ввода множителя (в заголовках) */
   .factor-input {
     display: flex; align-items: center; justify-content: center;
     gap: 3px;
     font-family: 'Cambria Math', 'Times New Roman', serif;
-    font-style: italic; font-size: 17px; color: #fff;
+    font-style: italic; font-size: 16px; color: #fff;
   }
   .factor-input input {
-    width: 38px; height: 34px;
-    text-align: center; font-size: 16px;
+    width: 34px; height: 32px;
+    text-align: center; font-size: 15px;
     font-family: 'Cambria Math', 'Times New Roman', serif;
     font-style: italic;
     border: 2px solid rgba(255,255,255,0.55);
@@ -153,21 +139,53 @@
   .factor-input input:focus { border-color: #ffe082; background: #fff; box-shadow: 0 0 0 3px rgba(255,224,130,0.35); }
   .factor-input input.ok  { border-color: #27ae60; background: #d4f8e0; }
   .factor-input input.bad { border-color: #e74c3c; background: #ffd9d4; }
-  .factor-input .x  { font-size: 18px; }
-  .factor-input .op { font-size: 16px; opacity: 0.9; }
+  .factor-input .x  { font-size: 17px; }
+  .factor-input .op { font-size: 15px; opacity: 0.9; }
+
+  /* Клетка с трёхчленом: три поля */
+  .trinom-cell {
+    display: flex; align-items: center; justify-content: center;
+    gap: 3px; flex-wrap: wrap;
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-style: italic; font-size: 14px; color: #fff;
+  }
+  .trinom-cell input {
+    width: 34px; height: 30px;
+    text-align: center; font-size: 14px;
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-style: italic;
+    border: 2px solid rgba(255,255,255,0.55);
+    border-radius: 7px;
+    background: rgba(255,255,255,0.95);
+    color: #1a1a1a; outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    padding: 0;
+  }
+  .trinom-cell input:focus { border-color: #ffe082; background: #fff; box-shadow: 0 0 0 3px rgba(255,224,130,0.35); }
+  .trinom-cell input.ok  { border-color: #27ae60; background: #d4f8e0; }
+  .trinom-cell input.bad { border-color: #e74c3c; background: #ffd9d4; }
+  .trinom-cell .lbl { font-size: 13px; opacity: 0.9; }
+  .trinom-cell .given-num {
+    display: inline-block;
+    min-width: 30px; padding: 3px 5px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 6px;
+    font-weight: 600;
+    color: #fff8e1;
+  }
 
   #message {
-    margin-top: 16px; font-size: 17px; font-weight: 700;
-    text-align: center; min-height: 26px;
-    padding: 10px 20px; border-radius: 12px; max-width: 760px;
+    margin-top: 14px; font-size: 16px; font-weight: 700;
+    text-align: center; min-height: 24px;
+    padding: 10px 18px; border-radius: 12px; max-width: 640px;
   }
   #message.success { background: rgba(39,174,96,0.4); color: #eafff0; }
   #message.error   { background: rgba(231,76,60,0.4); color: #ffe3e0; }
   #message.info    { background: rgba(41,128,185,0.4); color: #e3f2ff; }
 
   .legend {
-    margin-top: 12px; font-size: 13px; opacity: 0.85;
-    text-align: center; max-width: 760px; line-height: 1.5;
+    margin-top: 10px; font-size: 12px; opacity: 0.85;
+    text-align: center; max-width: 700px; line-height: 1.55;
   }
   .legend b { color: #ffe082; }
 
@@ -190,12 +208,12 @@
     <div class="level-card level-easy" onclick="startLevel('easy')">
       <span class="emoji">🐣</span>
       <div class="name">Лёгкий</div>
-      <div class="desc">Множители вида <b>x + b</b><br>(a = 1). Небольшие числа.</div>
+      <div class="desc">Множители вида <b>x + b</b>, небольшие числа.</div>
     </div>
     <div class="level-card level-medium" onclick="startLevel('medium')">
       <span class="emoji">🦊</span>
       <div class="name">Средний</div>
-      <div class="desc">Коэффициент <b>a</b> бывает 1, 2 или 3. Числа чуть больше.</div>
+      <div class="desc"><b>a</b> бывает 1, 2 или 3, числа чуть больше.</div>
     </div>
     <div class="level-card level-hard" onclick="startLevel('hard')">
       <span class="emoji">🐉</span>
@@ -207,8 +225,8 @@
     <input type="checkbox" id="soundCheck" checked>
     🔊 Звук включён
   </label>
-  <div class="subtitle" style="margin-top:8px;">
-    Варианты генерируются бесконечно — жми «Другой вариант», чтобы получить новый.
+  <div class="subtitle" style="margin-top:6px;">
+    Заполни заголовки (множители) и клетки-трёхчлены. Варианты генерируются бесконечно.
   </div>
 </div>
 
@@ -237,14 +255,15 @@
   <div id="message"></div>
 
   <div class="legend">
-    Вписывай множитель в виде <b>a·x + b</b>: слева — коэффициент при x, справа — свободный член.<br>
-    Пустое поле = <b>1</b> (для a) или <b>0</b> (для b). За верный ответ +10 очков, за подсказку −5.
+    <b>Заголовки:</b> множитель <b>a·x + b</b> — слева коэффициент при x, справа свободный член.<br>
+    <b>Клетки:</b> три числа — коэффициент при <b>x²</b>, коэффициент при <b>x</b> и свободный член.
+    Серые клетки уже даны как подсказка, белые — впиши сам.
   </div>
 </div>
 
 <script>
 /* =========================================================
-   ЗВУК (Web Audio API)
+   ЗВУК
    ========================================================= */
 let audioCtx = null;
 function soundEnabled() {
@@ -275,21 +294,12 @@ function beep(freq, duration, type = 'sine', volume = 0.15, delay = 0) {
   osc.start(start);
   osc.stop(start + duration + 0.02);
 }
-function playCorrect() {
-  beep(660, 0.12, 'sine', 0.15, 0);
-  beep(880, 0.14, 'sine', 0.15, 0.10);
-}
-function playWrong() {
-  beep(220, 0.18, 'square', 0.10, 0);
-  beep(165, 0.22, 'square', 0.10, 0.14);
-}
+function playCorrect() { beep(660, 0.12); beep(880, 0.14, 'sine', 0.15, 0.10); }
+function playWrong()   { beep(220, 0.18, 'square', 0.10, 0); beep(165, 0.22, 'square', 0.10, 0.14); }
 function playWin() {
-  const notes = [523, 659, 784, 1047];
-  notes.forEach((f, i) => beep(f, 0.18, 'sine', 0.16, i * 0.11));
+  [523, 659, 784, 1047].forEach((f, i) => beep(f, 0.18, 'sine', 0.16, i * 0.11));
 }
-function playClick() {
-  beep(440, 0.06, 'triangle', 0.08, 0);
-}
+function playClick() { beep(440, 0.06, 'triangle', 0.08, 0); }
 
 /* =========================================================
    ФОРМАТИРОВАНИЕ
@@ -302,14 +312,14 @@ function formatTrinomial(a, b, c) {
     else parts.push(a + 'x²');
   }
   if (b !== 0) {
-    let sign = b > 0 ? '+' : '−';
-    let absB = Math.abs(b);
-    let term = (absB === 1 ? '' : absB) + 'x';
+    const sign = b > 0 ? '+' : '−';
+    const absB = Math.abs(b);
+    const term = (absB === 1 ? '' : absB) + 'x';
     if (parts.length === 0) parts.push((b < 0 ? '−' : '') + term);
     else parts.push(sign + ' ' + term);
   }
   if (c !== 0) {
-    let sign = c > 0 ? '+' : '−';
+    const sign = c > 0 ? '+' : '−';
     if (parts.length === 0) parts.push((c < 0 ? '−' : '') + Math.abs(c));
     else parts.push(sign + ' ' + Math.abs(c));
   }
@@ -327,40 +337,30 @@ function formatFactor(a, b) {
 }
 
 /* =========================================================
-   ГЕНЕРАЦИЯ ВАРИАНТОВ (бесконечная)
+   ГЕНЕРАЦИЯ ВАРИАНТОВ (4×4, бесконечная)
    ========================================================= */
 function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 function pickNonZero(min, max) {
   let v = 0; while (v === 0) v = randInt(min, max); return v;
 }
 
-/**
- * Создать набор из 5 множителей для одного направления (строки или столбцы).
- * Ограничения по уровню:
- *  - easy:   a = 1, b ∈ [−5;5]
- *  - medium: a ∈ {1,2,3}, b ∈ [−6;6], |a*b| ≤ 12
- *  - hard:   a ∈ [1;4], b ∈ [−8;8], |a*b| ≤ 20
- * Все множители уникальны.
- */
-function genFactorSet(level) {
+function genFactorSet(level, count) {
   const set = [];
   const used = new Set();
   let guard = 0;
-  while (set.length < 5 && guard++ < 500) {
+  while (set.length < count && guard++ < 800) {
     let a, b;
     if (level === 'easy') {
       a = 1;
       b = pickNonZero(-5, 5);
     } else if (level === 'medium') {
-      // 1 чаще, 2 и 3 реже
       const r = Math.random();
       if (r < 0.5) a = 1;
       else if (r < 0.8) a = 2;
       else a = 3;
       b = pickNonZero(-6, 6);
-      // ограничение произведения
       if (Math.abs(a * b) > 12) continue;
-    } else { // hard
+    } else {
       a = pickNonZero(1, 4);
       b = pickNonZero(-8, 8);
       if (Math.abs(a * b) > 20) continue;
@@ -370,10 +370,9 @@ function genFactorSet(level) {
     used.add(key);
     set.push({ a, b });
   }
-  // добить, если guard исчерпан (маловероятно)
-  while (set.length < 5) {
-    let a = level === 'easy' ? 1 : randInt(1, 3);
-    let b = pickNonZero(-5, 5);
+  while (set.length < count) {
+    const a = level === 'easy' ? 1 : randInt(1, 3);
+    const b = pickNonZero(-5, 5);
     const key = a + '|' + b;
     if (!used.has(key)) { used.add(key); set.push({ a, b }); }
   }
@@ -381,34 +380,32 @@ function genFactorSet(level) {
 }
 
 /**
- * Маска заполненных клеток. Гарантируем минимум подсказок
- * в каждой строке и каждом столбце.
- *  - easy:   плотность ~0.55
- *  - medium: ~0.45
- *  - hard:   ~0.32
+ * Маска для сетки 4×4 (i, j = 0..3):
+ *   1 = клетка-подсказка (трёхчлен показан),
+ *   0 = пустая клетка для ввода.
+ * Гарантируем, что пустых клеток не меньше 4.
  */
 function makeGiven(level) {
-  let density = level === 'easy' ? 0.55 : level === 'medium' ? 0.45 : 0.32;
-  const mask = Array.from({ length: 5 }, () => Array(5).fill(0));
-  for (let i = 0; i < 5; i++)
-    for (let j = 0; j < 5; j++)
+  const density = level === 'easy' ? 0.45 : level === 'medium' ? 0.35 : 0.25;
+  const mask = Array.from({ length: 4 }, () => Array(4).fill(0));
+  for (let i = 0; i < 4; i++)
+    for (let j = 0; j < 4; j++)
       if (Math.random() < density) mask[i][j] = 1;
 
-  for (let i = 0; i < 5; i++)
-    if (!mask[i].some(v => v === 1)) mask[i][randInt(0, 4)] = 1;
-
-  for (let j = 0; j < 5; j++) {
-    let ok = false;
-    for (let i = 0; i < 5; i++) if (mask[i][j] === 1) { ok = true; break; }
-    if (!ok) mask[randInt(0, 4)][j] = 1;
+  let empty = 0;
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) if (!mask[i][j]) empty++;
+  let guard = 0;
+  while (empty < 4 && guard++ < 80) {
+    const i = randInt(0, 3), j = randInt(0, 3);
+    if (mask[i][j] === 1) { mask[i][j] = 0; empty++; }
   }
   return mask;
 }
 
 function makeVariant(level) {
   return {
-    rows: genFactorSet(level),
-    cols: genFactorSet(level),
+    rows: genFactorSet(level, 4),
+    cols: genFactorSet(level, 4),
     given: makeGiven(level)
   };
 }
@@ -418,18 +415,14 @@ function makeVariant(level) {
    ========================================================= */
 let currentLevel = null;
 let currentVariantData = null;
-let variantNumber = 1;   // сквозная нумерация внутри уровня
+let variantNumber = 1;
 let score = 0;
 let solvedThisVariant = false;
 
-// Таймер
 let timerStart = 0;
 let timerInterval = null;
 let hintUsedThisVariant = false;
 
-/* =========================================================
-   УРОВЕНЬ
-   ========================================================= */
 function levelName(level) {
   return level === 'easy' ? '🐣 Лёгкий'
        : level === 'medium' ? '🦊 Средний'
@@ -461,7 +454,7 @@ function backToLevels() {
 }
 
 /* =========================================================
-   ТАЙМЕР
+   ТАЙМЕР / СЧЁТ
    ========================================================= */
 function startTimer() {
   stopTimer();
@@ -478,29 +471,21 @@ function updateTimerBadge() {
   const ss = String(sec % 60).padStart(2, '0');
   document.getElementById('timerBadge').textContent = `⏱ ${mm}:${ss}`;
 }
-function getElapsedSeconds() {
-  return Math.floor((Date.now() - timerStart) / 1000);
-}
+function getElapsedSeconds() { return Math.floor((Date.now() - timerStart) / 1000); }
 
-/* =========================================================
-   СЧЁТ
-   ========================================================= */
 function updateScoreBadge() {
-  document.getElementById('scoreBadge').textContent = `⭐ Очки: ${score}`;
   const b = document.getElementById('scoreBadge');
+  b.textContent = `⭐ Очки: ${score}`;
   b.classList.remove('pop');
   void b.offsetWidth;
   b.classList.add('pop');
 }
-function addScore(n) {
-  score = Math.max(0, score + n);
-  updateScoreBadge();
-}
+function addScore(n) { score = Math.max(0, score + n); updateScoreBadge(); }
 
 /* =========================================================
    ОТРИСОВКА
    ========================================================= */
-function makeFactorInput(type, index, expectedA, expectedB) {
+function makeFactorInput(type, index) {
   const wrap = document.createElement('div');
   wrap.className = 'factor-input';
 
@@ -529,6 +514,66 @@ function makeFactorInput(type, index, expectedA, expectedB) {
   return wrap;
 }
 
+// Три поля: A (при x²), B (при x), C (свободный)
+function makeTrinomCell(i, j) {
+  const wrap = document.createElement('div');
+  wrap.className = 'trinom-cell';
+
+  const inpA = document.createElement('input');
+  inpA.type = 'text'; inpA.inputMode = 'numeric';
+  inpA.dataset.cell = 'trinom'; inpA.dataset.i = i; inpA.dataset.j = j; inpA.dataset.k = 'A';
+  inpA.maxLength = 4;
+
+  const inpB = document.createElement('input');
+  inpB.type = 'text'; inpB.inputMode = 'numeric';
+  inpB.dataset.cell = 'trinom'; inpB.dataset.i = i; inpB.dataset.j = j; inpB.dataset.k = 'B';
+  inpB.maxLength = 4;
+
+  const inpC = document.createElement('input');
+  inpC.type = 'text'; inpC.inputMode = 'numeric';
+  inpC.dataset.cell = 'trinom'; inpC.dataset.i = i; inpC.dataset.j = j; inpC.dataset.k = 'C';
+  inpC.maxLength = 4;
+
+  [inpA, inpB, inpC].forEach(inp => inp.addEventListener('input', clearMarks));
+
+  const lxA = document.createElement('span');
+  lxA.className = 'lbl'; lxA.textContent = 'x²';
+  const lxB = document.createElement('span');
+  lxB.className = 'lbl'; lxB.textContent = 'x';
+
+  wrap.appendChild(inpA);
+  wrap.appendChild(lxA);
+  wrap.appendChild(inpB);
+  wrap.appendChild(lxB);
+  wrap.appendChild(inpC);
+  return wrap;
+}
+
+function makeTrinomGiven(A, B, C) {
+  const wrap = document.createElement('div');
+  wrap.className = 'trinom-cell';
+
+  const a = document.createElement('span');
+  a.className = 'given-num'; a.textContent = A;
+  const lxA = document.createElement('span');
+  lxA.className = 'lbl'; lxA.textContent = 'x²';
+
+  const b = document.createElement('span');
+  b.className = 'given-num'; b.textContent = B;
+  const lxB = document.createElement('span');
+  lxB.className = 'lbl'; lxB.textContent = 'x';
+
+  const c = document.createElement('span');
+  c.className = 'given-num'; c.textContent = C;
+
+  wrap.appendChild(a);
+  wrap.appendChild(lxA);
+  wrap.appendChild(b);
+  wrap.appendChild(lxB);
+  wrap.appendChild(c);
+  return wrap;
+}
+
 function render() {
   const v = currentVariantData;
   const table = document.getElementById('grid');
@@ -539,33 +584,32 @@ function render() {
   const corner = document.createElement('td');
   corner.className = 'corner'; corner.textContent = '×';
   thead.appendChild(corner);
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < 4; j++) {
     const td = document.createElement('td');
     td.className = 'header';
-    td.appendChild(makeFactorInput('col', j, v.cols[j].a, v.cols[j].b));
+    td.appendChild(makeFactorInput('col', j));
     thead.appendChild(td);
   }
   table.appendChild(thead);
 
   // Строки
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 4; i++) {
     const tr = document.createElement('tr');
 
     const th = document.createElement('td');
     th.className = 'header';
-    th.appendChild(makeFactorInput('row', i, v.rows[i].a, v.rows[i].b));
+    th.appendChild(makeFactorInput('row', i));
     tr.appendChild(th);
 
-    for (let j = 0; j < 5; j++) {
+    for (let j = 0; j < 4; j++) {
       const td = document.createElement('td');
+      const A = v.rows[i].a * v.cols[j].a;
+      const B = v.rows[i].a * v.cols[j].b + v.rows[i].b * v.cols[j].a;
+      const C = v.rows[i].b * v.cols[j].b;
       if (v.given[i][j] === 1) {
-        td.className = 'given';
-        const A = v.rows[i].a * v.cols[j].a;
-        const B = v.rows[i].a * v.cols[j].b + v.rows[i].b * v.cols[j].a;
-        const C = v.rows[i].b * v.cols[j].b;
-        td.textContent = formatTrinomial(A, B, C);
+        td.appendChild(makeTrinomGiven(A, B, C));
       } else {
-        td.className = 'empty-cell'; td.textContent = '·';
+        td.appendChild(makeTrinomCell(i, j));
       }
       tr.appendChild(td);
     }
@@ -574,12 +618,12 @@ function render() {
 
   document.getElementById('levelBadge').textContent = 'Уровень: ' + levelName(currentLevel);
   document.getElementById('gameSubtitle').textContent =
-    `Вариант №${variantNumber} · Заполни первую строку и первый столбец`;
+    `Вариант №${variantNumber} · Заполни заголовки и пустые клетки`;
   updateTimerBadge();
 }
 
 /* =========================================================
-   ПРОВЕРКА
+   ЧТЕНИЕ / ОЧИСТКА
    ========================================================= */
 function clearMarks() {
   document.querySelectorAll('input').forEach(inp => inp.classList.remove('ok', 'bad'));
@@ -595,14 +639,30 @@ function readFactor(type, index) {
   if (isNaN(b)) b = null;
   return { a, b, inpA, inpB };
 }
+function readTrinom(i, j) {
+  const inpA = document.querySelector(`input[data-cell="trinom"][data-i="${i}"][data-j="${j}"][data-k="A"]`);
+  const inpB = document.querySelector(`input[data-cell="trinom"][data-i="${i}"][data-j="${j}"][data-k="B"]`);
+  const inpC = document.querySelector(`input[data-cell="trinom"][data-i="${i}"][data-j="${j}"][data-k="C"]`);
+  function toNum(inp) {
+    const raw = inp.value.trim();
+    if (raw === '' || raw === '-') return null;
+    const n = parseInt(raw, 10);
+    return Number.isFinite(n) ? n : null;
+  }
+  return { A: toNum(inpA), B: toNum(inpB), C: toNum(inpC), inpA, inpB, inpC };
+}
 
+/* =========================================================
+   ПРОВЕРКА
+   ========================================================= */
 function check() {
   if (solvedThisVariant) return;
   const v = currentVariantData;
   clearMarks();
   let allOk = true;
 
-  for (let i = 0; i < 5; i++) {
+  // 1. Заголовки-множители
+  for (let i = 0; i < 4; i++) {
     const f = readFactor('row', i);
     const exp = v.rows[i];
     if (f.a === null || f.b === null || f.a !== exp.a || f.b !== exp.b) {
@@ -612,7 +672,7 @@ function check() {
       f.inpA.classList.add('ok'); f.inpB.classList.add('ok');
     }
   }
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < 4; j++) {
     const f = readFactor('col', j);
     const exp = v.cols[j];
     if (f.a === null || f.b === null || f.a !== exp.a || f.b !== exp.b) {
@@ -623,14 +683,36 @@ function check() {
     }
   }
 
+  // 2. Клетки-трёхчлены (только пустые)
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (v.given[i][j] === 1) continue;
+      const r = readTrinom(i, j);
+      const A = v.rows[i].a * v.cols[j].a;
+      const B = v.rows[i].a * v.cols[j].b + v.rows[i].b * v.cols[j].a;
+      const C = v.rows[i].b * v.cols[j].b;
+
+      if (r.A === null || r.B === null || r.C === null) {
+        r.inpA.classList.add('bad'); r.inpB.classList.add('bad'); r.inpC.classList.add('bad');
+        allOk = false;
+        continue;
+      }
+      if (r.A === A && r.B === B && r.C === C) {
+        r.inpA.classList.add('ok'); r.inpB.classList.add('ok'); r.inpC.classList.add('ok');
+      } else {
+        r.inpA.classList.add('bad'); r.inpB.classList.add('bad'); r.inpC.classList.add('bad');
+        allOk = false;
+      }
+    }
+  }
+
   if (allOk) {
     solvedThisVariant = true;
     const seconds = getElapsedSeconds();
-    // Очки: база 10, бонус за скорость (до +10), минус за подсказку
-    let base = 10;
-    let speedBonus = Math.max(0, 10 - Math.floor(seconds / 10)); // чем быстрее, тем больше
-    let hintPenalty = hintUsedThisVariant ? 5 : 0;
-    let gained = Math.max(1, base + speedBonus - hintPenalty);
+    const base = 10;
+    const speedBonus = Math.max(0, 15 - Math.floor(seconds / 10));
+    const hintPenalty = hintUsedThisVariant ? 5 : 0;
+    const gained = Math.max(1, base + speedBonus - hintPenalty);
     addScore(gained);
     playWin();
     setMessage(`🎉 Всё верно! +${gained} очков (время: ${seconds} с). Жми «Другой вариант»!`, 'success');
@@ -650,66 +732,11 @@ function hint() {
     return;
   }
   const v = currentVariantData;
-  for (let i = 0; i < 5; i++) {
+  // 1. Сначала ищем незаполненный/неверный множитель
+  for (let i = 0; i < 4; i++) {
     const f = readFactor('row', i);
     const exp = v.rows[i];
     if (f.a !== exp.a || f.b !== exp.b) {
-      if (!hintUsedThisVariant) {
-        hintUsedThisVariant = true;
-        addScore(-5);
-      }
+      if (!hintUsedThisVariant) { hintUsedThisVariant = true; addScore(-5); }
       playClick();
-      setMessage(`💡 Подсказка: множитель строки ${i + 1} = ${formatFactor(exp.a, exp.b)}`, 'info');
-      return;
-    }
-  }
-  for (let j = 0; j < 5; j++) {
-    const f = readFactor('col', j);
-    const exp = v.cols[j];
-    if (f.a !== exp.a || f.b !== exp.b) {
-      if (!hintUsedThisVariant) {
-        hintUsedThisVariant = true;
-        addScore(-5);
-      }
-      playClick();
-      setMessage(`💡 Подсказка: множитель столбца ${j + 1} = ${formatFactor(exp.a, exp.b)}`, 'info');
-      return;
-    }
-  }
-  setMessage('Всё уже заполнено верно! 🎉', 'success');
-}
-
-/* =========================================================
-   СБРОС / СЛЕДУЮЩИЙ ВАРИАНТ
-   ========================================================= */
-function resetCurrent() {
-  if (solvedThisVariant) return;
-  document.querySelectorAll('input').forEach(inp => inp.value = '');
-  clearMarks();
-  playClick();
-  setMessage('Поля очищены. Пробуй снова!', 'info');
-}
-
-function nextVariant() {
-  variantNumber++;
-  solvedThisVariant = false;
-  hintUsedThisVariant = false;
-  currentVariantData = makeVariant(currentLevel);
-  render();
-  clearMarks();
-  startTimer();
-  playClick();
-  setMessage(`Вариант №${variantNumber}. Новый трёхчлен — вперёд!`, 'info');
-}
-
-/* =========================================================
-   СООБЩЕНИЯ
-   ========================================================= */
-function setMessage(text, cls) {
-  const msg = document.getElementById('message');
-  msg.textContent = text;
-  msg.className = cls || '';
-}
-</script>
-</body>
-</html>
+      setMessage(`💡 Подсказка: множитель строки ${i + 1} = ${formatFactor
