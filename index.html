@@ -282,16 +282,53 @@ function makeGiven(level) {
   var density = level === 'easy' ? 0.45 : level === 'medium' ? 0.35 : 0.25;
   var mask = [];
   for (var i = 0; i < 3; i++) { mask[i] = []; for (var j = 0; j < 3; j++) mask[i][j] = Math.random() < density ? 1 : 0; }
+
+  // Гарантия: в КАЖДОМ СТОЛБЦЕ есть хотя бы одна заданная клетка
+  // (иначе множитель этого столбца невозможно восстановить)
+  for (var j = 0; j < 3; j++) {
+    var hasInCol = false;
+    for (var i = 0; i < 3; i++) if (mask[i][j] === 1) { hasInCol = true; break; }
+    if (!hasInCol) {
+      var ri = randInt(0, 2);
+      mask[ri][j] = 1;
+    }
+  }
+
+  // Гарантия: в КАЖДОЙ СТРОКЕ есть хотя бы одна заданная клетка
+  // (иначе множитель этой строки невозможно восстановить)
+  for (var i2 = 0; i2 < 3; i2++) {
+    var hasInRow = false;
+    for (var j2 = 0; j2 < 3; j2++) if (mask[i2][j2] === 1) { hasInRow = true; break; }
+    if (!hasInRow) {
+      var rj = randInt(0, 2);
+      mask[i2][rj] = 1;
+    }
+  }
+
+  // Не даём всем клеткам стать заданными — оставляем минимум 3 пустых
   var empty = 0;
-  for (var i2 = 0; i2 < 3; i2++) for (var j2 = 0; j2 < 3; j2++) if (!mask[i2][j2]) empty++;
+  for (var i3 = 0; i3 < 3; i3++) for (var j3 = 0; j3 < 3; j3++) if (!mask[i3][j3]) empty++;
   var guard = 0;
   while (empty < 3 && guard++ < 80) {
-    var ri = randInt(0, 2), rj = randInt(0, 2);
-    if (mask[ri][rj] === 1) { mask[ri][rj] = 0; empty++; }
+    var a = randInt(0, 2), b = randInt(0, 2);
+    if (mask[a][b] === 1) { mask[a][b] = 0; empty++; }
   }
+
+  // Но после снятия лишних — заново проверим, что в каждом столбце и строке
+  // всё ещё есть хотя бы одна подсказка
+  for (var j4 = 0; j4 < 3; j4++) {
+    var okC = false;
+    for (var i4 = 0; i4 < 3; i4++) if (mask[i4][j4] === 1) { okC = true; break; }
+    if (!okC) mask[randInt(0, 2)][j4] = 1;
+  }
+  for (var i5 = 0; i5 < 3; i5++) {
+    var okR = false;
+    for (var j5 = 0; j5 < 3; j5++) if (mask[i5][j5] === 1) { okR = true; break; }
+    if (!okR) mask[i5][randInt(0, 2)] = 1;
+  }
+
   return mask;
 }
-
 function makeVariant(level) {
   return { rows: genFactorSet(level, 3), cols: genFactorSet(level, 3), given: makeGiven(level) };
 }
