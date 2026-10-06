@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Разложение квадратного трёхчлена</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    font-size: 26px;
+    margin: 8px 0 4px;
+    text-align: center;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 14px;
+    text-align: center;
+    max-width: 760px;
+    line-height: 1.5;
+  }
+
+  /* ---------- Экран выбора уровня ---------- */
+  #levelScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 700px;
+  }
+  #levelScreen h2 { font-size: 22px; margin: 0 0 6px; }
+  .level-cards {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    justify-content: center; width: 100%;
+  }
+  .level-card {
+    flex: 1 1 200px; max-width: 220px;
+    border-radius: 16px; padding: 20px 16px;
+    cursor: pointer; text-align: center;
+    border: 3px solid transparent;
+    transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  }
+  .level-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.5); }
+  .level-card .emoji { font-size: 40px; display: block; margin-bottom: 8px; }
+  .level-card .name { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .level-card .desc { font-size: 13px; opacity: 0.95; line-height: 1.4; }
+  .level-easy   { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+  .level-medium { background: linear-gradient(135deg, #f39c12, #e67e22); }
+  .level-hard   { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+  .sound-toggle {
+    margin-top: 6px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; opacity: 0.9;
+    background: rgba(255,255,255,0.12);
+    padding: 8px 16px; border-radius: 20px;
+    cursor: pointer; user-select: none;
+  }
+  .sound-toggle input { cursor: pointer; }
+
+  /* ---------- Игровой экран ---------- */
+  #gameScreen { display: none; flex-direction: column; align-items: center; width: 100%; }
+
+  .topbar {
+    display: flex; align-items: center; gap: 10px;
+    flex-wrap: wrap; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.18);
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 14px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge.score { background: rgba(46,204,113,0.35); }
+  .badge.timer { background: rgba(241,196,15,0.35); }
+
+  .controls {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 14px;
+  }
+  button {
+    padding: 10px 18px; border: none; border-radius: 10px;
+    font-size: 15px; cursor: pointer; font-weight: 700;
+    transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+    color: #fff;
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.35); filter: brightness(1.08); }
+  button:active { transform: translateY(0); }
+  .btn-check { background: #27ae60; }
+  .btn-reset { background: #e67e22; }
+  .btn-next  { background: #8e44ad; }
+  .btn-hint  { background: #2980b9; }
+  .btn-level { background: #34495e; }
+
+  .table-wrap { overflow-x: auto; max-width: 100%; padding-bottom: 6px; }
+  table { border-collapse: separate; border-spacing: 4px; margin: 0 auto; }
+  td {
+    width: 132px; height: 86px;
+    text-align: center; vertical-align: middle;
+    border-radius: 10px; font-size: 14px; padding: 4px;
+    background: rgba(255,255,255,0.08);
+  }
+  td.header { background: rgba(255,255,255,0.16); font-weight: bold; }
+  td.corner {
+    background: rgba(255,255,255,0.22);
+    font-size: 22px; font-weight: 900; color: #ffe082;
+  }
+  td.given {
+    background: rgba(255,255,255,0.20);
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-style: italic; font-size: 17px; font-weight: 600;
+    color: #fff8e1;
+  }
+  td.empty-cell {
+    background: rgba(0,0,0,0.18);
+    color: rgba(255,255,255,0.35); font-size: 20px;
+  }
+
+  .factor-input {
+    display: flex; align-items: center; justify-content: center;
+    gap: 3px;
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-style: italic; font-size: 17px; color: #fff;
+  }
+  .factor-input input {
+    width: 38px; height: 34px;
+    text-align: center; font-size: 16px;
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-style: italic;
+    border: 2px solid rgba(255,255,255,0.55);
+    border-radius: 7px;
+    background: rgba(255,255,255,0.95);
+    color: #1a1a1a; outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    padding: 0;
+  }
+  .factor-input input:focus { border-color: #ffe082; background: #fff; box-shadow: 0 0 0 3px rgba(255,224,130,0.35); }
+  .factor-input input.ok  { border-color: #27ae60; background: #d4f8e0; }
+  .factor-input input.bad { border-color: #e74c3c; background: #ffd9d4; }
+  .factor-input .x  { font-size: 18px; }
+  .factor-input .op { font-size: 16px; opacity: 0.9; }
+
+  #message {
+    margin-top: 16px; font-size: 17px; font-weight: 700;
+    text-align: center; min-height: 26px;
+    padding: 10px 20px; border-radius: 12px; max-width: 760px;
+  }
+  #message.success { background: rgba(39,174,96,0.4); color: #eafff0; }
+  #message.error   { background: rgba(231,76,60,0.4); color: #ffe3e0; }
+  #message.info    { background: rgba(41,128,185,0.4); color: #e3f2ff; }
+
+  .legend {
+    margin-top: 12px; font-size: 13px; opacity: 0.85;
+    text-align: center; max-width: 760px; line-height: 1.5;
+  }
+  .legend b { color: #ffe082; }
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  .pop { animation: pop 0.35s ease; }
+</style>
+</head>
+<body>
+
+<h1>🧩 Разложение квадратного трёхчлена</h1>
+
+<!-- ========== ЭКРАН ВЫБОРА УРОВНЯ ========== -->
+<div id="levelScreen">
+  <h2>Выбери уровень сложности</h2>
+  <div class="level-cards">
+    <div class="level-card level-easy" onclick="startLevel('easy')">
+      <span class="emoji">🐣</span>
+      <div class="name">Лёгкий</div>
+      <div class="desc">Множители вида <b>x + b</b><br>(a = 1). Небольшие числа.</div>
+    </div>
+    <div class="level-card level-medium" onclick="startLevel('medium')">
+      <span class="emoji">🦊</span>
+      <div class="name">Средний</div>
+      <div class="desc">Коэффициент <b>a</b> бывает 1, 2 или 3. Числа чуть больше.</div>
+    </div>
+    <div class="level-card level-hard" onclick="startLevel('hard')">
+      <span class="emoji">🐉</span>
+      <div class="name">Сложный</div>
+      <div class="desc"><b>a</b> от 1 до 4, <b>b</b> могут быть отрицательными.</div>
+    </div>
+  </div>
+  <label class="sound-toggle">
+    <input type="checkbox" id="soundCheck" checked>
+    🔊 Звук включён
+  </label>
+  <div class="subtitle" style="margin-top:8px;">
+    Варианты генерируются бесконечно — жми «Другой вариант», чтобы получить новый.
+  </div>
+</div>
+
+<!-- ========== ИГРОВОЙ ЭКРАН ========== -->
+<div id="gameScreen">
+  <div class="subtitle" id="gameSubtitle"></div>
+
+  <div class="topbar">
+    <span class="badge" id="levelBadge">Уровень</span>
+    <span class="badge score" id="scoreBadge">⭐ Очки: 0</span>
+    <span class="badge timer" id="timerBadge">⏱ 00:00</span>
+  </div>
+
+  <div class="controls">
+    <button class="btn-check" onclick="check()">✅ Проверить</button>
+    <button class="btn-hint"  onclick="hint()">💡 Подсказка</button>
+    <button class="btn-reset" onclick="resetCurrent()">🔄 Сбросить</button>
+    <button class="btn-next"  onclick="nextVariant()">➡️ Другой вариант</button>
+    <button class="btn-level" onclick="backToLevels()">🏠 Сменить уровень</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="grid"></table>
+  </div>
+
+  <div id="message"></div>
+
+  <div class="legend">
+    Вписывай множитель в виде <b>a·x + b</b>: слева — коэффициент при x, справа — свободный член.<br>
+    Пустое поле = <b>1</b> (для a) или <b>0</b> (для b). За верный ответ +10 очков, за подсказку −5.
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ЗВУК (Web Audio API)
+   ========================================================= */
+let audioCtx = null;
+function soundEnabled() {
+  const cb = document.getElementById('soundCheck');
+  return cb ? cb.checked : true;
+}
+function ensureAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch (e) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+function beep(freq, duration, type = 'sine', volume = 0.15, delay = 0) {
+  if (!soundEnabled()) return;
+  ensureAudio();
+  if (!audioCtx) return;
+  const start = audioCtx.currentTime + delay;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(start);
+  osc.stop(start + duration + 0.02);
+}
+function playCorrect() {
+  beep(660, 0.12, 'sine', 0.15, 0);
+  beep(880, 0.14, 'sine', 0.15, 0.10);
+}
+function playWrong() {
+  beep(220, 0.18, 'square', 0.10, 0);
+  beep(165, 0.22, 'square', 0.10, 0.14);
+}
+function playWin() {
+  const notes = [523, 659, 784, 1047];
+  notes.forEach((f, i) => beep(f, 0.18, 'sine', 0.16, i * 0.11));
+}
+function playClick() {
+  beep(440, 0.06, 'triangle', 0.08, 0);
+}
+
+/* =========================================================
+   ФОРМАТИРОВАНИЕ
+   ========================================================= */
+function formatTrinomial(a, b, c) {
+  let parts = [];
+  if (a !== 0) {
+    if (a === 1) parts.push('x²');
+    else if (a === -1) parts.push('−x²');
+    else parts.push(a + 'x²');
+  }
+  if (b !== 0) {
+    let sign = b > 0 ? '+' : '−';
+    let absB = Math.abs(b);
+    let term = (absB === 1 ? '' : absB) + 'x';
+    if (parts.length === 0) parts.push((b < 0 ? '−' : '') + term);
+    else parts.push(sign + ' ' + term);
+  }
+  if (c !== 0) {
+    let sign = c > 0 ? '+' : '−';
+    if (parts.length === 0) parts.push((c < 0 ? '−' : '') + Math.abs(c));
+    else parts.push(sign + ' ' + Math.abs(c));
+  }
+  if (parts.length === 0) return '0';
+  return parts.join(' ');
+}
+function formatFactor(a, b) {
+  let s = '';
+  if (a === 1) s += 'x';
+  else if (a === -1) s += '−x';
+  else s += a + 'x';
+  if (b > 0) s += ' + ' + b;
+  else if (b < 0) s += ' − ' + Math.abs(b);
+  return s;
+}
+
+/* =========================================================
+   ГЕНЕРАЦИЯ ВАРИАНТОВ (бесконечная)
+   ========================================================= */
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function pickNonZero(min, max) {
+  let v = 0; while (v === 0) v = randInt(min, max); return v;
+}
+
+/**
+ * Создать набор из 5 множителей для одного направления (строки или столбцы).
+ * Ограничения по уровню:
+ *  - easy:   a = 1, b ∈ [−5;5]
+ *  - medium: a ∈ {1,2,3}, b ∈ [−6;6], |a*b| ≤ 12
+ *  - hard:   a ∈ [1;4], b ∈ [−8;8], |a*b| ≤ 20
+ * Все множители уникальны.
+ */
+function genFactorSet(level) {
+  const set = [];
+  const used = new Set();
+  let guard = 0;
+  while (set.length < 5 && guard++ < 500) {
+    let a, b;
+    if (level === 'easy') {
+      a = 1;
+      b = pickNonZero(-5, 5);
+    } else if (level === 'medium') {
+      // 1 чаще, 2 и 3 реже
+      const r = Math.random();
+      if (r < 0.5) a = 1;
+      else if (r < 0.8) a = 2;
+      else a = 3;
+      b = pickNonZero(-6, 6);
+      // ограничение произведения
+      if (Math.abs(a * b) > 12) continue;
+    } else { // hard
+      a = pickNonZero(1, 4);
+      b = pickNonZero(-8, 8);
+      if (Math.abs(a * b) > 20) continue;
+    }
+    const key = a + '|' + b;
+    if (used.has(key)) continue;
+    used.add(key);
+    set.push({ a, b });
+  }
+  // добить, если guard исчерпан (маловероятно)
+  while (set.length < 5) {
+    let a = level === 'easy' ? 1 : randInt(1, 3);
+    let b = pickNonZero(-5, 5);
+    const key = a + '|' + b;
+    if (!used.has(key)) { used.add(key); set.push({ a, b }); }
+  }
+  return set;
+}
+
+/**
+ * Маска заполненных клеток. Гарантируем минимум подсказок
+ * в каждой строке и каждом столбце.
+ *  - easy:   плотность ~0.55
+ *  - medium: ~0.45
+ *  - hard:   ~0.32
+ */
+function makeGiven(level) {
+  let density = level === 'easy' ? 0.55 : level === 'medium' ? 0.45 : 0.32;
+  const mask = Array.from({ length: 5 }, () => Array(5).fill(0));
+  for (let i = 0; i < 5; i++)
+    for (let j = 0; j < 5; j++)
+      if (Math.random() < density) mask[i][j] = 1;
+
+  for (let i = 0; i < 5; i++)
+    if (!mask[i].some(v => v === 1)) mask[i][randInt(0, 4)] = 1;
+
+  for (let j = 0; j < 5; j++) {
+    let ok = false;
+    for (let i = 0; i < 5; i++) if (mask[i][j] === 1) { ok = true; break; }
+    if (!ok) mask[randInt(0, 4)][j] = 1;
+  }
+  return mask;
+}
+
+function makeVariant(level) {
+  return {
+    rows: genFactorSet(level),
+    cols: genFactorSet(level),
+    given: makeGiven(level)
+  };
+}
+
+/* =========================================================
+   СОСТОЯНИЕ ИГРЫ
+   ========================================================= */
+let currentLevel = null;
+let currentVariantData = null;
+let variantNumber = 1;   // сквозная нумерация внутри уровня
+let score = 0;
+let solvedThisVariant = false;
+
+// Таймер
+let timerStart = 0;
+let timerInterval = null;
+let hintUsedThisVariant = false;
+
+/* =========================================================
+   УРОВЕНЬ
+   ========================================================= */
+function levelName(level) {
+  return level === 'easy' ? '🐣 Лёгкий'
+       : level === 'medium' ? '🦊 Средний'
+       : '🐉 Сложный';
+}
+
+function startLevel(level) {
+  currentLevel = level;
+  variantNumber = 1;
+  score = 0;
+  solvedThisVariant = false;
+  hintUsedThisVariant = false;
+  currentVariantData = makeVariant(level);
+
+  document.getElementById('levelScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'flex';
+  render();
+  startTimer();
+  updateScoreBadge();
+  setMessage(`Уровень «${levelName(level)}». Удачи!`, 'info');
+  playClick();
+}
+
+function backToLevels() {
+  stopTimer();
+  document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('levelScreen').style.display = 'flex';
+  playClick();
+}
+
+/* =========================================================
+   ТАЙМЕР
+   ========================================================= */
+function startTimer() {
+  stopTimer();
+  timerStart = Date.now();
+  updateTimerBadge();
+  timerInterval = setInterval(updateTimerBadge, 500);
+}
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+function updateTimerBadge() {
+  const sec = Math.floor((Date.now() - timerStart) / 1000);
+  const mm = String(Math.floor(sec / 60)).padStart(2, '0');
+  const ss = String(sec % 60).padStart(2, '0');
+  document.getElementById('timerBadge').textContent = `⏱ ${mm}:${ss}`;
+}
+function getElapsedSeconds() {
+  return Math.floor((Date.now() - timerStart) / 1000);
+}
+
+/* =========================================================
+   СЧЁТ
+   ========================================================= */
+function updateScoreBadge() {
+  document.getElementById('scoreBadge').textContent = `⭐ Очки: ${score}`;
+  const b = document.getElementById('scoreBadge');
+  b.classList.remove('pop');
+  void b.offsetWidth;
+  b.classList.add('pop');
+}
+function addScore(n) {
+  score = Math.max(0, score + n);
+  updateScoreBadge();
+}
+
+/* =========================================================
+   ОТРИСОВКА
+   ========================================================= */
+function makeFactorInput(type, index, expectedA, expectedB) {
+  const wrap = document.createElement('div');
+  wrap.className = 'factor-input';
+
+  const inpA = document.createElement('input');
+  inpA.type = 'text'; inpA.inputMode = 'numeric';
+  inpA.dataset.type = type; inpA.dataset.index = index; inpA.dataset.part = 'a';
+  inpA.maxLength = 3;
+
+  const inpB = document.createElement('input');
+  inpB.type = 'text'; inpB.inputMode = 'numeric';
+  inpB.dataset.type = type; inpB.dataset.index = index; inpB.dataset.part = 'b';
+  inpB.maxLength = 3;
+
+  inpA.addEventListener('input', clearMarks);
+  inpB.addEventListener('input', clearMarks);
+
+  const xSpan = document.createElement('span');
+  xSpan.className = 'x'; xSpan.textContent = 'x';
+  const plusSpan = document.createElement('span');
+  plusSpan.className = 'op'; plusSpan.textContent = '+';
+
+  wrap.appendChild(inpA);
+  wrap.appendChild(xSpan);
+  wrap.appendChild(plusSpan);
+  wrap.appendChild(inpB);
+  return wrap;
+}
+
+function render() {
+  const v = currentVariantData;
+  const table = document.getElementById('grid');
+  table.innerHTML = '';
+
+  // Заголовочная строка
+  const thead = document.createElement('tr');
+  const corner = document.createElement('td');
+  corner.className = 'corner'; corner.textContent = '×';
+  thead.appendChild(corner);
+  for (let j = 0; j < 5; j++) {
+    const td = document.createElement('td');
+    td.className = 'header';
+    td.appendChild(makeFactorInput('col', j, v.cols[j].a, v.cols[j].b));
+    thead.appendChild(td);
+  }
+  table.appendChild(thead);
+
+  // Строки
+  for (let i = 0; i < 5; i++) {
+    const tr = document.createElement('tr');
+
+    const th = document.createElement('td');
+    th.className = 'header';
+    th.appendChild(makeFactorInput('row', i, v.rows[i].a, v.rows[i].b));
+    tr.appendChild(th);
+
+    for (let j = 0; j < 5; j++) {
+      const td = document.createElement('td');
+      if (v.given[i][j] === 1) {
+        td.className = 'given';
+        const A = v.rows[i].a * v.cols[j].a;
+        const B = v.rows[i].a * v.cols[j].b + v.rows[i].b * v.cols[j].a;
+        const C = v.rows[i].b * v.cols[j].b;
+        td.textContent = formatTrinomial(A, B, C);
+      } else {
+        td.className = 'empty-cell'; td.textContent = '·';
+      }
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+
+  document.getElementById('levelBadge').textContent = 'Уровень: ' + levelName(currentLevel);
+  document.getElementById('gameSubtitle').textContent =
+    `Вариант №${variantNumber} · Заполни первую строку и первый столбец`;
+  updateTimerBadge();
+}
+
+/* =========================================================
+   ПРОВЕРКА
+   ========================================================= */
+function clearMarks() {
+  document.querySelectorAll('input').forEach(inp => inp.classList.remove('ok', 'bad'));
+}
+function readFactor(type, index) {
+  const inpA = document.querySelector(`input[data-type="${type}"][data-index="${index}"][data-part="a"]`);
+  const inpB = document.querySelector(`input[data-type="${type}"][data-index="${index}"][data-part="b"]`);
+  const rawA = inpA.value.trim();
+  const rawB = inpB.value.trim();
+  let a = rawA === '' ? 1 : parseInt(rawA, 10);
+  let b = rawB === '' ? 0 : parseInt(rawB, 10);
+  if (isNaN(a)) a = null;
+  if (isNaN(b)) b = null;
+  return { a, b, inpA, inpB };
+}
+
+function check() {
+  if (solvedThisVariant) return;
+  const v = currentVariantData;
+  clearMarks();
+  let allOk = true;
+
+  for (let i = 0; i < 5; i++) {
+    const f = readFactor('row', i);
+    const exp = v.rows[i];
+    if (f.a === null || f.b === null || f.a !== exp.a || f.b !== exp.b) {
+      f.inpA.classList.add('bad'); f.inpB.classList.add('bad');
+      allOk = false;
+    } else {
+      f.inpA.classList.add('ok'); f.inpB.classList.add('ok');
+    }
+  }
+  for (let j = 0; j < 5; j++) {
+    const f = readFactor('col', j);
+    const exp = v.cols[j];
+    if (f.a === null || f.b === null || f.a !== exp.a || f.b !== exp.b) {
+      f.inpA.classList.add('bad'); f.inpB.classList.add('bad');
+      allOk = false;
+    } else {
+      f.inpA.classList.add('ok'); f.inpB.classList.add('ok');
+    }
+  }
+
+  if (allOk) {
+    solvedThisVariant = true;
+    const seconds = getElapsedSeconds();
+    // Очки: база 10, бонус за скорость (до +10), минус за подсказку
+    let base = 10;
+    let speedBonus = Math.max(0, 10 - Math.floor(seconds / 10)); // чем быстрее, тем больше
+    let hintPenalty = hintUsedThisVariant ? 5 : 0;
+    let gained = Math.max(1, base + speedBonus - hintPenalty);
+    addScore(gained);
+    playWin();
+    setMessage(`🎉 Всё верно! +${gained} очков (время: ${seconds} с). Жми «Другой вариант»!`, 'success');
+    stopTimer();
+  } else {
+    playWrong();
+    setMessage('❌ Есть ошибки. Проверь красные поля.', 'error');
+  }
+}
+
+/* =========================================================
+   ПОДСКАЗКА
+   ========================================================= */
+function hint() {
+  if (solvedThisVariant) {
+    setMessage('Этот вариант уже решён. Жми «Другой вариант»!', 'info');
+    return;
+  }
+  const v = currentVariantData;
+  for (let i = 0; i < 5; i++) {
+    const f = readFactor('row', i);
+    const exp = v.rows[i];
+    if (f.a !== exp.a || f.b !== exp.b) {
+      if (!hintUsedThisVariant) {
+        hintUsedThisVariant = true;
+        addScore(-5);
+      }
+      playClick();
+      setMessage(`💡 Подсказка: множитель строки ${i + 1} = ${formatFactor(exp.a, exp.b)}`, 'info');
+      return;
+    }
+  }
+  for (let j = 0; j < 5; j++) {
+    const f = readFactor('col', j);
+    const exp = v.cols[j];
+    if (f.a !== exp.a || f.b !== exp.b) {
+      if (!hintUsedThisVariant) {
+        hintUsedThisVariant = true;
+        addScore(-5);
+      }
+      playClick();
+      setMessage(`💡 Подсказка: множитель столбца ${j + 1} = ${formatFactor(exp.a, exp.b)}`, 'info');
+      return;
+    }
+  }
+  setMessage('Всё уже заполнено верно! 🎉', 'success');
+}
+
+/* =========================================================
+   СБРОС / СЛЕДУЮЩИЙ ВАРИАНТ
+   ========================================================= */
+function resetCurrent() {
+  if (solvedThisVariant) return;
+  document.querySelectorAll('input').forEach(inp => inp.value = '');
+  clearMarks();
+  playClick();
+  setMessage('Поля очищены. Пробуй снова!', 'info');
+}
+
+function nextVariant() {
+  variantNumber++;
+  solvedThisVariant = false;
+  hintUsedThisVariant = false;
+  currentVariantData = makeVariant(currentLevel);
+  render();
+  clearMarks();
+  startTimer();
+  playClick();
+  setMessage(`Вариант №${variantNumber}. Новый трёхчлен — вперёд!`, 'info');
+}
+
+/* =========================================================
+   СООБЩЕНИЯ
+   ========================================================= */
+function setMessage(text, cls) {
+  const msg = document.getElementById('message');
+  msg.textContent = text;
+  msg.className = cls || '';
+}
+</script>
+</body>
+</html>
