@@ -514,7 +514,6 @@ function makeFactorInput(type, index) {
   return wrap;
 }
 
-// Три поля: A (при x²), B (при x), C (свободный)
 function makeTrinomCell(i, j) {
   const wrap = document.createElement('div');
   wrap.className = 'trinom-cell';
@@ -579,7 +578,6 @@ function render() {
   const table = document.getElementById('grid');
   table.innerHTML = '';
 
-  // Заголовочная строка
   const thead = document.createElement('tr');
   const corner = document.createElement('td');
   corner.className = 'corner'; corner.textContent = '×';
@@ -592,7 +590,6 @@ function render() {
   }
   table.appendChild(thead);
 
-  // Строки
   for (let i = 0; i < 4; i++) {
     const tr = document.createElement('tr');
 
@@ -661,7 +658,6 @@ function check() {
   clearMarks();
   let allOk = true;
 
-  // 1. Заголовки-множители
   for (let i = 0; i < 4; i++) {
     const f = readFactor('row', i);
     const exp = v.rows[i];
@@ -683,7 +679,6 @@ function check() {
     }
   }
 
-  // 2. Клетки-трёхчлены (только пустые)
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       if (v.given[i][j] === 1) continue;
@@ -732,11 +727,19 @@ function hint() {
     return;
   }
   const v = currentVariantData;
-  // 1. Сначала ищем незаполненный/неверный множитель
+
   for (let i = 0; i < 4; i++) {
     const f = readFactor('row', i);
     const exp = v.rows[i];
     if (f.a !== exp.a || f.b !== exp.b) {
       if (!hintUsedThisVariant) { hintUsedThisVariant = true; addScore(-5); }
       playClick();
-      setMessage(`💡 Подсказка: множитель строки ${i + 1} = ${formatFactor
+      setMessage(`💡 Подсказка: множитель строки ${i + 1} = ${formatFactor(exp.a, exp.b)}`, 'info');
+      return;
+    }
+  }
+  for (let j = 0; j < 4; j++) {
+    const f = readFactor('col', j);
+    const exp = v.cols[j];
+    if (f.a !== exp.a || f.b !== exp.b) {
+      if (!hintUsedThisVariant) {
