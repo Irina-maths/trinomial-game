@@ -69,14 +69,14 @@
 
   .table-wrap { overflow-x: auto; max-width: 100%; padding-bottom: 6px; }
   table { border-collapse: separate; border-spacing: 5px; margin: 0 auto; }
-  td { width: 175px; height: 92px; text-align: center; vertical-align: middle; border-radius: 10px; padding: 3px; background: rgba(255,255,255,0.08); }
-  td.header { background: rgba(255,255,255,0.16); font-weight: bold; width: 140px; }
-  td.corner { background: rgba(255,255,255,0.22); font-size: 20px; font-weight: 900; color: #ffe082; width: 140px; }
+  td { width: 185px; height: 96px; text-align: center; vertical-align: middle; border-radius: 10px; padding: 3px; background: rgba(255,255,255,0.08); }
+  td.header { background: rgba(255,255,255,0.16); font-weight: bold; width: 150px; }
+  td.corner { background: rgba(255,255,255,0.22); font-size: 22px; font-weight: 900; color: #ffe082; width: 150px; }
 
-  .factor-input { display: flex; align-items: center; justify-content: center; gap: 3px;
+  .factor-input { display: flex; align-items: center; justify-content: center; gap: 4px;
     font-family: 'Cambria Math', 'Times New Roman', serif; font-style: italic; font-size: 16px; color: #fff; }
   .factor-input input {
-    width: 34px; height: 32px; text-align: center; font-size: 15px;
+    width: 36px; height: 34px; text-align: center; font-size: 16px;
     font-family: 'Cambria Math', 'Times New Roman', serif; font-style: italic;
     border: 2px solid rgba(255,255,255,0.55); border-radius: 7px;
     background: rgba(255,255,255,0.95); color: #1a1a1a; outline: none;
@@ -86,13 +86,13 @@
   .factor-input input:focus { border-color: #ffe082; background: #fff; box-shadow: 0 0 0 3px rgba(255,224,130,0.35); }
   .factor-input input.ok  { border-color: #27ae60; background: #d4f8e0; }
   .factor-input input.bad { border-color: #e74c3c; background: #ffd9d4; }
-  .factor-input .x { font-size: 17px; }
-  .factor-input .op { font-size: 15px; opacity: 0.9; }
+  .factor-input .x  { font-size: 24px; font-weight: 700; }
+  .factor-input .op { font-size: 20px; font-weight: 600; opacity: 0.95; }
 
-  .trinom-cell { display: flex; align-items: center; justify-content: center; gap: 3px; flex-wrap: wrap;
+  .trinom-cell { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;
     font-family: 'Cambria Math', 'Times New Roman', serif; font-style: italic; font-size: 14px; color: #fff; }
   .trinom-cell input {
-    width: 34px; height: 30px; text-align: center; font-size: 14px;
+    width: 36px; height: 34px; text-align: center; font-size: 16px;
     font-family: 'Cambria Math', 'Times New Roman', serif; font-style: italic;
     border: 2px solid rgba(255,255,255,0.55); border-radius: 7px;
     background: rgba(255,255,255,0.95); color: #1a1a1a; outline: none;
@@ -102,9 +102,18 @@
   .trinom-cell input:focus { border-color: #ffe082; background: #fff; box-shadow: 0 0 0 3px rgba(255,224,130,0.35); }
   .trinom-cell input.ok  { border-color: #27ae60; background: #d4f8e0; }
   .trinom-cell input.bad { border-color: #e74c3c; background: #ffd9d4; }
-  .trinom-cell .lbl { font-size: 13px; opacity: 0.9; }
-  .trinom-cell .given-num { display: inline-block; min-width: 30px; padding: 3px 5px;
-    background: rgba(255,255,255,0.22); border-radius: 6px; font-weight: 600; color: #fff8e1; }
+  .trinom-cell .lbl { font-size: 20px; font-weight: 700; opacity: 0.95; }
+
+  .given-full {
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff8e1;
+    text-align: center;
+    padding: 6px 4px;
+    letter-spacing: 0.3px;
+  }
 
   #message { margin-top: 14px; font-size: 16px; font-weight: 700; text-align: center;
     min-height: 24px; padding: 10px 18px; border-radius: 12px; max-width: 640px; }
@@ -213,6 +222,29 @@ function formatFactor(a, b) {
   if (b > 0) s += ' + ' + b;
   else if (b < 0) s += ' − ' + Math.abs(b);
   return s;
+}
+
+function formatTrinomial(a, b, c) {
+  var parts = [];
+  if (a !== 0) {
+    if (a === 1) parts.push('x²');
+    else if (a === -1) parts.push('−x²');
+    else parts.push(a + 'x²');
+  }
+  if (b !== 0) {
+    var signB = b > 0 ? '+' : '−';
+    var absB = Math.abs(b);
+    var termB = (absB === 1 ? '' : absB) + 'x';
+    if (parts.length === 0) parts.push((b < 0 ? '−' : '') + termB);
+    else parts.push(signB + ' ' + termB);
+  }
+  if (c !== 0) {
+    var signC = c > 0 ? '+' : '−';
+    if (parts.length === 0) parts.push((c < 0 ? '−' : '') + Math.abs(c));
+    else parts.push(signC + ' ' + Math.abs(c));
+  }
+  if (parts.length === 0) return '0';
+  return parts.join(' ');
 }
 
 function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
@@ -347,13 +379,9 @@ function makeTrinomCell(i, j) {
   return wrap;
 }
 function makeTrinomGiven(A, B, C) {
-  var wrap = document.createElement('div'); wrap.className = 'trinom-cell';
-  var a = document.createElement('span'); a.className='given-num'; a.textContent=A;
-  var lxA = document.createElement('span'); lxA.className='lbl'; lxA.textContent='x²';
-  var b = document.createElement('span'); b.className='given-num'; b.textContent=B;
-  var lxB = document.createElement('span'); lxB.className='lbl'; lxB.textContent='x';
-  var c = document.createElement('span'); c.className='given-num'; c.textContent=C;
-  wrap.appendChild(a); wrap.appendChild(lxA); wrap.appendChild(b); wrap.appendChild(lxB); wrap.appendChild(c);
+  var wrap = document.createElement('div');
+  wrap.className = 'given-full';
+  wrap.textContent = formatTrinomial(A, B, C);
   return wrap;
 }
 
@@ -491,7 +519,7 @@ function hint() {
       if (r.A !== A || r.B !== B || r.C !== C) {
         if (!hintUsedThisVariant) { hintUsedThisVariant = true; addScore(-5); }
         playClick();
-        setMessage('💡 Подсказка: клетка (' + (ii + 1) + ', ' + (jj + 1) + ') = ' + A + 'x² + ' + B + 'x + ' + C, 'info');
+        setMessage('💡 Подсказка: клетка (' + (ii + 1) + ', ' + (jj + 1) + ') = ' + formatTrinomial(A, B, C), 'info');
         return;
       }
     }
