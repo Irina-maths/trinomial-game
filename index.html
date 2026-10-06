@@ -281,19 +281,19 @@ function genFactorSet(level, count) {
 function makeGiven(level) {
   var density = level === 'easy' ? 0.45 : level === 'medium' ? 0.35 : 0.25;
   var mask = [];
-  for (var i = 0; i < 4; i++) { mask[i] = []; for (var j = 0; j < 4; j++) mask[i][j] = Math.random() < density ? 1 : 0; }
+  for (var i = 0; i < 3; i++) { mask[i] = []; for (var j = 0; j < 3; j++) mask[i][j] = Math.random() < density ? 1 : 0; }
   var empty = 0;
-  for (var i2 = 0; i2 < 4; i2++) for (var j2 = 0; j2 < 4; j2++) if (!mask[i2][j2]) empty++;
+  for (var i2 = 0; i2 < 3; i2++) for (var j2 = 0; j2 < 3; j2++) if (!mask[i2][j2]) empty++;
   var guard = 0;
-  while (empty < 4 && guard++ < 80) {
-    var ri = randInt(0, 3), rj = randInt(0, 3);
+  while (empty < 3 && guard++ < 80) {
+    var ri = randInt(0, 2), rj = randInt(0, 2);
     if (mask[ri][rj] === 1) { mask[ri][rj] = 0; empty++; }
   }
   return mask;
 }
 
 function makeVariant(level) {
-  return { rows: genFactorSet(level, 4), cols: genFactorSet(level, 4), given: makeGiven(level) };
+  return { rows: genFactorSet(level, 3), cols: genFactorSet(level, 3), given: makeGiven(level) };
 }
 
 var currentLevel = null;
@@ -391,16 +391,16 @@ function render() {
   var thead = document.createElement('tr');
   var corner = document.createElement('td'); corner.className='corner'; corner.textContent='×';
   thead.appendChild(corner);
-  for (var j = 0; j < 4; j++) {
+  for (var j = 0; j < 3; j++) {
     var td = document.createElement('td'); td.className='header';
     td.appendChild(makeFactorInput('col', j)); thead.appendChild(td);
   }
   table.appendChild(thead);
-  for (var i = 0; i < 4; i++) {
+  for (var i = 0; i < 3; i++) {
     var tr = document.createElement('tr');
     var th = document.createElement('td'); th.className='header';
     th.appendChild(makeFactorInput('row', i)); tr.appendChild(th);
-    for (var jj = 0; jj < 4; jj++) {
+    for (var jj = 0; jj < 3; jj++) {
       var tdd = document.createElement('td');
       var A = v.rows[i].a * v.cols[jj].a;
       var B = v.rows[i].a * v.cols[jj].b + v.rows[i].b * v.cols[jj].a;
@@ -445,18 +445,18 @@ function readTrinom(i, j) {
 function check() {
   if (solvedThisVariant) return;
   var v = currentVariantData; clearMarks(); var allOk = true;
-  for (var i = 0; i < 4; i++) {
+  for (var i = 0; i < 3; i++) {
     var f = readFactor('row', i); var exp = v.rows[i];
     if (f.a === null || f.b === null || f.a !== exp.a || f.b !== exp.b) { f.inpA.classList.add('bad'); f.inpB.classList.add('bad'); allOk = false; }
     else { f.inpA.classList.add('ok'); f.inpB.classList.add('ok'); }
   }
-  for (var j = 0; j < 4; j++) {
+  for (var j = 0; j < 3; j++) {
     var fc = readFactor('col', j); var expc = v.cols[j];
     if (fc.a === null || fc.b === null || fc.a !== expc.a || fc.b !== expc.b) { fc.inpA.classList.add('bad'); fc.inpB.classList.add('bad'); allOk = false; }
     else { fc.inpA.classList.add('ok'); fc.inpB.classList.add('ok'); }
   }
-  for (var ii = 0; ii < 4; ii++) {
-    for (var jj = 0; jj < 4; jj++) {
+  for (var ii = 0; ii < 3; ii++) {
+    for (var jj = 0; jj < 3; jj++) {
       if (v.given[ii][jj] === 1) continue;
       var r = readTrinom(ii, jj);
       var A = v.rows[ii].a * v.cols[jj].a;
@@ -491,7 +491,7 @@ function check() {
 function hint() {
   if (solvedThisVariant) { setMessage('Этот вариант уже решён. Жми «Другой вариант»!', 'info'); return; }
   var v = currentVariantData;
-  for (var i = 0; i < 4; i++) {
+  for (var i = 0; i < 3; i++) {
     var f = readFactor('row', i); var exp = v.rows[i];
     if (f.a !== exp.a || f.b !== exp.b) {
       if (!hintUsedThisVariant) { hintUsedThisVariant = true; addScore(-5); }
@@ -500,7 +500,7 @@ function hint() {
       return;
     }
   }
-  for (var j = 0; j < 4; j++) {
+  for (var j = 0; j < 3; j++) {
     var fc = readFactor('col', j); var expc = v.cols[j];
     if (fc.a !== expc.a || fc.b !== expc.b) {
       if (!hintUsedThisVariant) { hintUsedThisVariant = true; addScore(-5); }
@@ -509,8 +509,8 @@ function hint() {
       return;
     }
   }
-  for (var ii = 0; ii < 4; ii++) {
-    for (var jj = 0; jj < 4; jj++) {
+  for (var ii = 0; ii < 3; ii++) {
+    for (var jj = 0; jj < 3; jj++) {
       if (v.given[ii][jj] === 1) continue;
       var r = readTrinom(ii, jj);
       var A = v.rows[ii].a * v.cols[jj].a;
